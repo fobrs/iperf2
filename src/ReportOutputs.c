@@ -2620,6 +2620,7 @@ void reporter_print_connection_report (struct ConnectionInfo *report) {
     char linebuffer[SNBUFFERSIZE + 1];
     char *b = &linebuffer[0];
     linebuffer[SNBUFFERSIZE] = '\0';
+    linebuffer[0] = '\0';
     int n;
 #if HAVE_DECL_TCP_WINDOW_CLAMP
     if (!isUDP(report->common) && isRxClamp(report->common)) {
