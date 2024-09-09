@@ -1940,10 +1940,6 @@ void Settings_ModalOptions (struct thread_Settings *mExtSettings) {
 	    mExtSettings->mHistci_lower = 5;
 	    mExtSettings->mHistci_upper = 95;
 	}
-	if (isCongestionControl(mExtSettings) && isReverse(mExtSettings)) {
-	    fprintf(stderr, "ERROR: tcp congestion control -Z and --reverse cannot be applied together\n");
-	    bail = true;
-	}
 	{
 	    int one_only = 0;
 	    if (isFullDuplex(mExtSettings))
