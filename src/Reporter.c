@@ -679,6 +679,12 @@ inline bool reporter_process_report (struct ReportHeader *reporthdr) {
 	    free((char *)reporthdr->this_report);
 	}
 	break;
+    case ERROR_REPORT:
+        if (reporthdr->this_report) {
+	    fprintf(stderr, "%s\n", (char *)reporthdr->this_report);
+	    free((char *)reporthdr->this_report);
+	}
+	break;
     default:
 	fprintf(stderr,"Invalid report type in process report %p\n", reporthdr->this_report);
 	assert(0);
@@ -2157,7 +2163,7 @@ int post_connection_error (struct thread_Settings *inSettings, struct timeval t)
     if (text) {
 	snprintf(text, (slen+1), "%stcp connect to %s port %" PRIu16 " failed (%s) on %s", \
 		 inSettings->mTransferIDStr, tmpaddr, port, errtext, timestr);
-	PostReport(InitStringReport(text));
+	PostReport(InitErrorReport(text));
 	FREE_ARRAY(text);
     }
     return connect_errno;
@@ -2171,7 +2177,7 @@ void post_connect_timer_expired (struct thread_Settings *inSettings, struct time
     if (text) {
 	snprintf(text, len, "%stcp connect attempt timer expired on %s\n", \
 		 inSettings->mTransferIDStr, timestr);
-	PostReport(InitStringReport(text));
+	PostReport(InitErrorReport(text));
 	FREE_ARRAY(text);
     }
 }
