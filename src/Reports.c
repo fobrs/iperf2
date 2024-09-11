@@ -1133,6 +1133,19 @@ struct ReportHeader* InitStringReport (char *textoutput) {
     return reporthdr;
 }
 
+struct ReportHeader* InitErrorReport (char *textoutput) {
+    struct ReportHeader *reporthdr = (struct ReportHeader *) calloc(1, sizeof(struct ReportHeader));
+    if (reporthdr == NULL) {
+	WARN_errno(1, "Out of Memory!!\n");
+    }
+    reporthdr->type = ERROR_REPORT;
+
+    reporthdr->this_report = (void *) calloc((strlen(textoutput) + 1), sizeof(char));
+    char *dst = (char *)(reporthdr->this_report);
+    strcpy(dst, textoutput);
+    return reporthdr;
+}
+
 /* -------------------------------------------------------------------
  * Send an AckFIN (a datagram acknowledging a FIN) on the socket,
  * then select on the socket for some time to check for silence.

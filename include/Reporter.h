@@ -175,7 +175,8 @@ enum ReportType {
     SETTINGS_REPORT,
     CONNECTION_REPORT,
     SERVER_RELAY_REPORT,
-    STRING_REPORT
+    STRING_REPORT,
+    ERROR_REPORT
 };
 
 enum ReportSubType {
@@ -463,6 +464,7 @@ struct ConnectionInfo* InitConnectOnlyReport(struct thread_Settings *thread);
 struct ReportHeader *InitSettingsReport(struct thread_Settings *inSettings);
 struct ReportHeader* InitServerRelayUDPReport(struct thread_Settings *inSettings, struct server_hdr *server);
 struct ReportHeader* InitStringReport (char *textoutput);
+struct ReportHeader* InitErrorReport (char *textoutput);
 void PostReport(struct ReportHeader *reporthdr);
 void ReportPacket (struct ReporterData* data, struct ReportStruct *packet);
 bool EndJob(struct ReportHeader *reporthdr,  struct ReportStruct *packet);
