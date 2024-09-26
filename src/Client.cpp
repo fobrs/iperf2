@@ -158,6 +158,9 @@ void Client::mySockInit (void) {
 	struct ReportHeader *tmp = InitSettingsReport(mSettings);
 	assert(tmp!=NULL);
 	PostReport(tmp);
+	if (isConnectOnly(mSettings)) {
+	    setNoSettReport(mSettings);
+	}
     }
     mysock_init_done = true;
 }
@@ -489,10 +492,11 @@ void Client::ConnectPeriodic () {
     setNoConnectSync(mSettings);
     int num_connects = -1;
     if (!(mSettings->mInterval > 0)) {
-	if (mSettings->connectonly_count < 0)
+	if (mSettings->connectonly_count < 0) {
 	    num_connects = 10;
-	else if (mSettings->connectonly_count > 0)
+	} else if (mSettings->connectonly_count > 0) {
 	    num_connects = mSettings->connectonly_count;
+	}
     }
 
     do {
@@ -513,11 +517,12 @@ void Client::ConnectPeriodic () {
 		tmp.tv_usec = next.getUsecs();
 		clock_usleep_abstime(&tmp);
 	    }
+	} else if (isModeTime(mSettings)) {
+	    next.setnow();
+	    num_connects = 1;
+//	    printf("***** set now %ld.%ld %ld.%ld\n", next.getSecs(), next.getUsecs(), end.getSecs(), end.getUsecs());
 	}
-	if (num_connects > 0) {
-	    --num_connects;
-	}
-    } while (num_connects && !sInterupted && (next.before(end) || (isModeTime(mSettings) && !(mSettings->mInterval > 0))));
+    } while (num_connects-- && !sInterupted && next.before(end));
 }
 /* -------------------------------------------------------------------
  * Common traffic loop intializations
