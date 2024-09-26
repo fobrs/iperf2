@@ -664,9 +664,7 @@ void Settings_Interpret (char option, const char *optarg, struct thread_Settings
 	    }
 	    mExtSettings->mInterval = static_cast<unsigned int>(ceil(itime * 1e6));
 	    mExtSettings->mIntervalMode = kInterval_Time;
-	    if (mExtSettings->mInterval <= 0) {
-		mExtSettings->mInterval = -1;
-	    } else if (mExtSettings->mInterval < SMALLEST_INTERVAL) {
+	    if (mExtSettings->mInterval < SMALLEST_INTERVAL) {
 		mExtSettings->mInterval = SMALLEST_INTERVAL;
 		fprintf (stderr, report_interval_small, (double) mExtSettings->mInterval / 1e3);
 	    }
