@@ -142,8 +142,8 @@ struct ReferenceMutex {
 #else
   #define SETABSTIME(ts, seconds) do { \
     struct timeval t1; \
-    gettimeofday(&t1, NULL);
-    ts.tv_sec = t1.tv_sec + inSeconds; \
+    gettimeofday(&t1, NULL); \
+    ts.tv_sec = t1.tv_sec + seconds; \
     ts.tv_nsec = t1.tv_sec * 1000; \
 } while (0)
 #endif
